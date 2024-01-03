@@ -83,7 +83,7 @@ jobs:
 
       # This step will pause the workflow and wait for a manual approval if it's not the master branch.
       - name: Wait for Manual Approval
-        if: github.ref == 'refs/heads/master'
+        if: github.ref != 'refs/heads/master'
         run: echo "Waiting for manual approval of the Terraform plan."
 
       # Actual deployment step that applies the Terraform plan
