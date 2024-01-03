@@ -76,10 +76,10 @@ jobs:
         run: terraform -chdir=${{ secrets.TF_DIR_PR }} plan -out=tfplan
 
       # Outputs the plan data for manual review
-      - name: Output Terraform Plan Result
-        run: |
-          echo "Terraform plan output:"
-          terraform show -chdir=${{ secrets.TF_DIR_PR }} tfplan
+#      - name: Output Terraform Plan Result
+#        run: |
+#          echo "Terraform plan output:"
+#          terraform show -chdir=${{ secrets.TF_DIR_PR }} tfplan
 
       # This step will pause the workflow and wait for a manual approval if it's not the master branch.
       - name: Wait for Manual Approval
