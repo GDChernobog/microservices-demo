@@ -1,40 +1,33 @@
-# Authenticate with GCP
 provider "google" {
-  project     = "gd-gcp-gridu-devops-t1-t2"
-  region      = "us-central1"
+  project = var.project_id
+  region  = var.region
 }
 
 # Create a GKE cluster with zero initial nodes
-resource "google_container_cluster" "vdjurovic_cluster_np" {
-  name     = "vdjurovic-cluster-np"
-  location = "us-central1"
-  deletion_protection = false
-  initial_node_count = 1
-  #remove_default_node_pool = true
-  #enable_autopilot = true
+resource "google_container_cluster" "primary" {
+  name               = var.cluster_name
+  location           = var.region
+  deletion_protection= var.deletion_protection
+  initial_node_count = var.initial_node_count
 }
- #Create a node pool with horizontal autoscaling
-resource "google_container_node_pool" "vdjurovic_autoscaling_node_pool" {
-  name       = "vdjurovic-autoscaling-node-pool"
-  location   = "us-central1"
-  cluster    = google_container_cluster.vdjurovic_cluster_np.name
-  node_count = 1
+
+#Create a node pool with horizontal autoscaling
+resource "google_container_node_pool" "primary_autoscaling_node_pool" {
+  name       = var.node_pool_name
+  location   = var.region
+  cluster    = google_container_cluster.primary.name
+  node_count = var.min_node_count
 
   autoscaling {
-    min_node_count = 1
-    max_node_count = 5
+    min_node_count = var.min_node_count
+    max_node_count = var.max_node_count
   }
 
   node_config {
     preemptible  = false
-    machine_type = "e2-medium"
-    disk_size_gb = 150
-    #image_type   = "UBUNTU"
-
-    # Additional configurations can be added here
+    machine_type = var.machine_type
+    disk_size_gb = var.disk_size_gb
   }
 }
-
-
 
 
