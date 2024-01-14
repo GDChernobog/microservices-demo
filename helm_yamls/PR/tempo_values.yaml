@@ -3,8 +3,8 @@ storage:
   trace:
     backend: s3
     s3:
-      access_key: 'grafana-tempo'
-      secret_key: 'supersecret'
+      access_key: ${{ secrets.TEMPO_USER }}
+      secret_key: ${{ secrets.TEMPO_PASS }}
       bucket: 'tempo-traces'
       endpoint: 'tempo-minio:9000'
       insecure: true
@@ -12,8 +12,8 @@ storage:
 minio:
   enabled: true
   mode: standalone
-  rootUser: grafana-tempo
-  rootPassword: supersecret
+  rootUser: ${{ secrets.TEMPO_USER }}
+  rootPassword: ${{ secrets.TEMPO_PASS }}
   buckets:
     # Default Tempo storage bucket
     - name: tempo-traces
